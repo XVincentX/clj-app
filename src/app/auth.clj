@@ -17,14 +17,14 @@
 
 (def ^{:private true} rsa-key-provider
   (memoize
-   (fn [url]
-     (let [jwk-provider (new-jwk-provider url)]
-       (reify RSAKeyProvider
-         (getPublicKeyById [_ key-id]
-           (-> (.get jwk-provider key-id)
-               (.getPublicKey)))
-         (getPrivateKey [_] nil)
-         (getPrivateKeyId [_] nil))))))
+    (fn [url]
+      (let [jwk-provider (new-jwk-provider url)]
+        (reify RSAKeyProvider
+          (getPublicKeyById [_ key-id]
+            (-> (.get jwk-provider key-id)
+                (.getPublicKey)))
+          (getPrivateKey [_] nil)
+          (getPrivateKeyId [_] nil))))))
 
 (defn- base64->map
   [base64-str]
@@ -66,26 +66,26 @@
 
 (defn decode-jwt [{:keys [required?] :as opts}]
   (interceptor/before
-   ::decode-jwt
-   (fn [ctx]
-     (try
-       (if-let [token (find-token (:request ctx))]
-         (->> (decode token opts)
-              (assoc ctx :claims))
-         (if required? (assoc ctx :response (unauthorized "Token not provided"))
-             (assoc ctx :claims {})))
+    ::decode-jwt
+    (fn [ctx]
+      (try
+        (if-let [token (find-token (:request ctx))]
+          (->> (decode token opts)
+               (assoc ctx :claims))
+          (if required? (assoc ctx :response (unauthorized "Token not provided"))
+                        (assoc ctx :claims {})))
 
-       (catch JWTDecodeException _
-         (assoc ctx :response (unauthorized "The token provided is not valid")))
+        (catch JWTDecodeException _
+          (assoc ctx :response (unauthorized "The token provided is not valid")))
 
-       (catch SignatureVerificationException _
-         (assoc ctx :response (unauthorized "Signature could not be verified")))
+        (catch SignatureVerificationException _
+          (assoc ctx :response (unauthorized "Signature could not be verified")))
 
-       (catch AlgorithmMismatchException _
-         (assoc ctx :response (unauthorized "Algorithm verification problem")))
+        (catch AlgorithmMismatchException _
+          (assoc ctx :response (unauthorized "Algorithm verification problem")))
 
-       (catch TokenExpiredException _
-         (assoc ctx :response (unauthorized "Token has expired")))
+        (catch TokenExpiredException _
+          (assoc ctx :response (unauthorized "Token has expired")))
 
-       (catch JWTVerificationException _
-         (assoc ctx :response (unauthorized "Invalid claims")))))))
+        (catch JWTVerificationException _
+          (assoc ctx :response (unauthorized "Invalid claims")))))))

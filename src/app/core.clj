@@ -1,6 +1,9 @@
-(ns app.core (:gen-class) (:require [io.pedestal.http :as http]
-                                    [environ.core :refer [env]]
-                                    [app.jwt :refer [decode-jwt]]))
+(ns app.core
+  (:gen-class)
+  (:require [io.pedestal.http :as http]
+            [environ.core :refer [env]]
+            [app.jwt :refer [decode-jwt]]))
+x
 
 (def jwk-endpoint "https://vncz.us.auth0.com/.well-known/jwks.json")
 
@@ -12,7 +15,7 @@
 
 (defn hello-world [req] {:status 200 :body (:claims req)})
 
-(defn get-hero [{{:keys [hero]} :path-params
+(defn get-hero [{{:keys [hero]}     :path-params
                  {:keys [extended]} :query-params}]
   (if-let [hero (->> heroes
                      (filter #(= hero (:hero %)))
@@ -34,10 +37,10 @@
                       ::http/host   "0.0.0.0"
                       ::http/join?  false
                       ::http/port   (Integer. (or (env :port) 5000))}
-                 http/default-interceptors
-                 (update ::http/interceptors into [http/json-body
-                                                   (decode-jwt {:required? true
-                                                                :jwk-endpoint jwk-endpoint})])))
+                     http/default-interceptors
+                     (update ::http/interceptors into [http/json-body
+                                                       (decode-jwt {:required?    true
+                                                                    :jwk-endpoint jwk-endpoint})])))
 
 (defn -main []
   (http/start (http/create-server service-map)))
@@ -48,8 +51,8 @@
 (defn start-dev []
   (reset! server
           (http/start (http/create-server
-                       (assoc service-map
-                              ::http/join? false)))))
+                        (assoc service-map
+                          ::http/join? false)))))
 
 (defn stop-dev []
   (when-let [s @server] (http/stop s)))
