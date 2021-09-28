@@ -3,7 +3,6 @@
   (:require [io.pedestal.http :as http]
             [environ.core :refer [env]]
             [app.jwt :refer [decode-jwt]]))
-x
 
 (def jwk-endpoint "https://vncz.us.auth0.com/.well-known/jwks.json")
 
