@@ -48,7 +48,9 @@
         base64->map)))
 
 (defn- decode [token {:keys [jwk-endpoint] :as opts}]
-  (-> (Algorithm/RSA256 (rsa-key-provider jwk-endpoint))
+  (-> jwk-endpoint
+      rsa-key-provider
+      Algorithm/RSA256
       (decode-token token opts)))
 
 (defn- find-token [{:keys [headers]}]
