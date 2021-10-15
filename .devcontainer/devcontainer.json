@@ -1,0 +1,4 @@
+{
+  "image": "clojure:openjdk-17-tools-deps",
+  "extensions": ["betterthantomorrow.calva"]
+}
