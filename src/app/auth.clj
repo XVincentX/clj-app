@@ -66,6 +66,7 @@
    :headers {}
    :body    text})
 
+; Example on how to decode by yourself
 (defn decode-jwt [{:keys [required?] :as opts}]
   (interceptor/before
     ::decode-jwt
