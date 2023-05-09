@@ -4,4 +4,4 @@
         io.pedestal/pedestal.immutant {:mvn/version "0.5.9"}
         org.slf4j/slf4j-simple {:mvn/version "1.7.32"}
         environ/environ {:mvn/version "1.2.0"}
-        no.nsd/clj-jwt {:git/url "https://gitlab.nsd.no/clojure/clj-jwt.git" :git/sha "bc23acb3c7cbf0d2def2d395c3e3d9c405be28d5"}}}
+        com.github.sikt-no/clj-jwt {:git/tag "0.4.7" :git/sha "bc23acb"}}}
